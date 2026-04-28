@@ -176,19 +176,34 @@
         <h2>Moments We Treasure</h2>
       </div>
 
-      <div class="gallery">
-        <button class="gallery__item gallery__item--tall" type="button" data-image="images/image2.jpg" data-caption="Portrait One">
-          <img src="images/image2.jpg" alt="Couple portrait one">
-        </button>
-        <button class="gallery__item" type="button" data-image="images/image3.jpg" data-caption="Portrait Two">
-          <img src="images/image3.jpg" alt="Couple portrait two">
-        </button>
-        <button class="gallery__item gallery__item--wide" type="button" data-image="images/image4.jpeg" data-caption="Portrait Three">
-          <img src="images/image4.jpeg" alt="Couple portrait three">
-        </button>
-        <button class="gallery__item" type="button" data-image="images/image5.jpg" data-caption="Portrait Four">
-          <img src="images/image5.jpg" alt="Couple portrait four">
-        </button>
+      <div class="gallery-carousel" data-gallery-carousel>
+        <div class="gallery-carousel__viewport">
+          <div class="gallery-carousel__track">
+            <button class="gallery__item" type="button" data-image="images/image2.jpg" data-caption="Portrait One">
+              <img src="images/image2.jpg" alt="Couple portrait one">
+            </button>
+            <button class="gallery__item" type="button" data-image="images/image3.jpg" data-caption="Portrait Two">
+              <img src="images/image3.jpg" alt="Couple portrait two">
+            </button>
+            <button class="gallery__item" type="button" data-image="images/image4.jpeg" data-caption="Portrait Three">
+              <img src="images/image4.jpeg" alt="Couple portrait three">
+            </button>
+            <button class="gallery__item" type="button" data-image="images/image5.jpg" data-caption="Portrait Four">
+              <img src="images/image5.jpg" alt="Couple portrait four">
+            </button>
+          </div>
+        </div>
+
+        <div class="gallery-carousel__controls">
+          <button class="gallery-carousel__arrow" type="button" data-gallery-prev aria-label="Previous gallery image">←</button>
+          <div class="gallery-carousel__dots" aria-label="Gallery slide navigation">
+            <button class="gallery-carousel__dot is-active" type="button" data-gallery-dot="0" aria-label="Go to gallery image 1"></button>
+            <button class="gallery-carousel__dot" type="button" data-gallery-dot="1" aria-label="Go to gallery image 2"></button>
+            <button class="gallery-carousel__dot" type="button" data-gallery-dot="2" aria-label="Go to gallery image 3"></button>
+            <button class="gallery-carousel__dot" type="button" data-gallery-dot="3" aria-label="Go to gallery image 4"></button>
+          </div>
+          <button class="gallery-carousel__arrow" type="button" data-gallery-next aria-label="Next gallery image">→</button>
+        </div>
       </div>
     </section>
   </main>

@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const revealItems = document.querySelectorAll(".reveal, .footer");
   const countdownRoot = document.querySelector(".countdown");
   const galleryButtons = document.querySelectorAll(".gallery__item");
+  const galleryCarousel = document.querySelector("[data-gallery-carousel]");
   const scrollCue = document.querySelector(".hero__scroll-cue");
   const detailsSection = document.querySelector("#details");
   const sectionLinks = document.querySelectorAll("[data-section-link]");
@@ -107,6 +108,74 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     trackedSections.forEach((section) => sectionObserver.observe(section));
+  }
+
+  if (galleryCarousel) {
+    const galleryTrack = galleryCarousel.querySelector(".gallery-carousel__track");
+    const gallerySlides = Array.from(galleryCarousel.querySelectorAll(".gallery__item"));
+    const galleryDots = Array.from(galleryCarousel.querySelectorAll(".gallery-carousel__dot"));
+    const prevButton = galleryCarousel.querySelector("[data-gallery-prev]");
+    const nextButton = galleryCarousel.querySelector("[data-gallery-next]");
+    let currentSlide = 0;
+
+    const renderGallerySlide = () => {
+      galleryTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+      galleryDots.forEach((dot, index) => {
+        dot.classList.toggle("is-active", index === currentSlide);
+      });
+    };
+
+    prevButton?.addEventListener("click", () => {
+      currentSlide = (currentSlide - 1 + gallerySlides.length) % gallerySlides.length;
+      renderGallerySlide();
+    });
+
+    nextButton?.addEventListener("click", () => {
+      currentSlide = (currentSlide + 1) % gallerySlides.length;
+      renderGallerySlide();
+    });
+
+    galleryDots.forEach((dot, index) => {
+      dot.addEventListener("click", () => {
+        currentSlide = index;
+        renderGallerySlide();
+      });
+    });
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    galleryTrack.addEventListener(
+      "touchstart",
+      (event) => {
+        touchStartX = event.changedTouches[0].clientX;
+      },
+      { passive: true }
+    );
+
+    galleryTrack.addEventListener(
+      "touchend",
+      (event) => {
+        touchEndX = event.changedTouches[0].clientX;
+        const deltaX = touchEndX - touchStartX;
+
+        if (Math.abs(deltaX) < 40) {
+          return;
+        }
+
+        if (deltaX < 0) {
+          currentSlide = (currentSlide + 1) % gallerySlides.length;
+        } else {
+          currentSlide = (currentSlide - 1 + gallerySlides.length) % gallerySlides.length;
+        }
+
+        renderGallerySlide();
+      },
+      { passive: true }
+    );
+
+    renderGallerySlide();
   }
 
   const openLightbox = (src, caption, alt) => {

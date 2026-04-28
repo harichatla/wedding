@@ -564,38 +564,88 @@ button {
   margin-top: 1.4rem;
 }
 
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
+.gallery-carousel {
+  margin-top: 1.5rem;
+}
+
+.gallery-carousel__viewport {
+  overflow: hidden;
+  border-radius: calc(var(--radius-lg) + 2px);
+}
+
+.gallery-carousel__track {
+  display: flex;
+  transition: transform 0.45s ease;
+  will-change: transform;
+}
+
+.gallery-carousel__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 1rem;
   margin-top: 1.5rem;
 }
 
 .gallery__item {
-  grid-column: span 4;
+  position: relative;
+  flex: 0 0 100%;
   overflow: hidden;
   border-radius: var(--radius-lg);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(240, 228, 255, 0.96));
   box-shadow: var(--shadow-soft);
 }
 
-.gallery__item--tall {
-  grid-column: span 5;
-}
-
-.gallery__item--wide {
-  grid-column: span 7;
-}
-
 .gallery__item img {
+  width: 100%;
   height: 100%;
   aspect-ratio: 4 / 5;
-  object-fit: cover;
-  object-position: center top;
+  object-fit: contain;
+  object-position: center center;
   transition: transform 0.45s ease;
 }
 
-.gallery__item--wide img {
-  aspect-ratio: 16 / 10;
+.gallery-carousel__arrow {
+  width: 3rem;
+  height: 3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(123, 47, 247, 0.12);
+  box-shadow: var(--shadow-soft);
+  color: var(--primary-deep);
+  font-size: 1.2rem;
+  transition: transform 0.25s ease, background-color 0.25s ease, color 0.25s ease;
+}
+
+.gallery-carousel__arrow:hover,
+.gallery-carousel__arrow:focus-visible {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #ffffff;
+}
+
+.gallery-carousel__dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.gallery-carousel__dot {
+  width: 0.78rem;
+  height: 0.78rem;
+  border-radius: 50%;
+  background: rgba(123, 47, 247, 0.18);
+  border: 0;
+  transition: transform 0.25s ease, background-color 0.25s ease;
+}
+
+.gallery-carousel__dot.is-active {
+  transform: scale(1.15);
+  background: linear-gradient(135deg, var(--primary), var(--accent));
 }
 
 .gallery__item:hover img,
@@ -749,10 +799,8 @@ button {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .gallery__item,
-  .gallery__item--tall,
-  .gallery__item--wide {
-    grid-column: span 12;
+  .gallery__item img {
+    aspect-ratio: 4 / 5;
   }
 }
 
@@ -807,6 +855,15 @@ button {
 
   .detail-list {
     grid-template-columns: 1fr;
+  }
+
+  .gallery-carousel__controls {
+    gap: 0.75rem;
+  }
+
+  .gallery-carousel__arrow {
+    width: 2.75rem;
+    height: 2.75rem;
   }
 
   .panel {
