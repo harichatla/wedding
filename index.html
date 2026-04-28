@@ -6,6 +6,7 @@
   <title>Bhuvana &amp; Sagar | Wedding Invitation</title>
   <meta
     name="description"
+    data-view-description
     content="A colorful modern wedding invitation for Bhuvana and Sagar."
   >
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,6 +54,11 @@
     <span class="theme-toggle__label" data-theme-label>Dark Mode</span>
   </button>
 
+  <button class="view-toggle" type="button" data-view-toggle aria-label="Switch to groom invitation view">
+    <span class="view-toggle__icon" aria-hidden="true">↔</span>
+    <span class="view-toggle__label" data-view-label>Groom View</span>
+  </button>
+
   <button class="celebrate-button" type="button" data-celebrate-button aria-label="Celebrate with fireworks">
     <span class="celebrate-button__icon" aria-hidden="true">🎉</span>
     <span>Celebrate</span>
@@ -69,8 +75,14 @@
     </div>
 
     <div class="hero__intro reveal">
-      <p class="hero__eyebrow">Chatla's Wedding Celebration</p>
-      <h1>Bhuvana <span>&amp;</span> Sagar</h1>
+      <div class="hero__hosts" aria-label="Hosting family">
+        <p class="hero__hosts-title">With the blessings of</p>
+        <div class="hero__hosts-names" aria-label="Parents names">
+          <span data-view-host-names>Chatla Pavani &amp; Anandam</span>
+        </div>
+      </div>
+      <p class="hero__eyebrow">Wedding Invitation</p>
+      <h1><span data-view-name-first>Bhuvana</span> <span>&amp;</span> <span data-view-name-second>Sagar</span></h1>
       <p class="hero__lead">A joyful invitation to celebrate love, family, and a new beginning.</p>
     </div>
 

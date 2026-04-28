@@ -2,6 +2,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const themeToggle = document.querySelector("[data-theme-toggle]");
   const themeLabel = document.querySelector("[data-theme-label]");
   const themeIcon = document.querySelector("[data-theme-icon]");
+  const viewToggle = document.querySelector("[data-view-toggle]");
+  const viewLabel = document.querySelector("[data-view-label]");
+  const viewHostNames = document.querySelector("[data-view-host-names]");
+  const viewNameFirst = document.querySelector("[data-view-name-first]");
+  const viewNameSecond = document.querySelector("[data-view-name-second]");
   const revealItems = document.querySelectorAll(".reveal, .footer");
   const countdownRoot = document.querySelector(".countdown");
   const blessingButton = document.querySelector("[data-blessing-button]");
@@ -21,6 +26,69 @@ document.addEventListener("DOMContentLoaded", () => {
   const lightboxCloseButtons = document.querySelectorAll(".lightbox__close, .lightbox__backdrop");
   const themeStorageKey = "wedding-theme";
   const themeMediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  const metaDescription = document.querySelector("[data-view-description]");
+  const pageUrl = new URL(window.location.href);
+  const invitationVariants = {
+    bride: {
+      hostNames: "Chatla Pavani & Anandam",
+      firstName: "Bhuvana",
+      secondName: "Sagar",
+      pageTitle: "Bride View | Bhuvana & Sagar Wedding Invitation",
+      description: "A colorful modern wedding invitation for Bhuvana and Sagar from the bride's family.",
+      toggleLabel: "Groom View",
+      toggleAria: "Switch to groom invitation view"
+    },
+    groom: {
+      hostNames: "Voggu Suvarna & Late Markandeyulu",
+      firstName: "Sagar",
+      secondName: "Bhuvana",
+      pageTitle: "Groom View | Bhuvana & Sagar Wedding Invitation",
+      description: "A colorful modern wedding invitation for Bhuvana and Sagar from the groom's family.",
+      toggleLabel: "Bride View",
+      toggleAria: "Switch to bride invitation view"
+    }
+  };
+
+  const applyInvitationView = (view, syncUrl = false) => {
+    const variant = invitationVariants[view] || invitationVariants.bride;
+    document.body.dataset.invitationView = view;
+
+    if (viewHostNames) {
+      viewHostNames.textContent = variant.hostNames;
+    }
+
+    if (viewNameFirst) {
+      viewNameFirst.textContent = variant.firstName;
+    }
+
+    if (viewNameSecond) {
+      viewNameSecond.textContent = variant.secondName;
+    }
+
+    document.title = variant.pageTitle;
+
+    if (metaDescription) {
+      metaDescription.setAttribute("content", variant.description);
+    }
+
+    if (viewToggle && viewLabel) {
+      viewLabel.textContent = variant.toggleLabel;
+      viewToggle.setAttribute("aria-label", variant.toggleAria);
+    }
+
+    if (syncUrl) {
+      if (view === "groom") {
+        pageUrl.searchParams.set("user", "groom");
+      } else {
+        pageUrl.searchParams.delete("user");
+      }
+
+      window.history.replaceState({}, "", pageUrl);
+    }
+  };
+
+  const initialView = pageUrl.searchParams.get("user") === "groom" ? "groom" : "bride";
+  applyInvitationView(initialView);
 
   const applyTheme = (theme, persist = false) => {
     document.body.dataset.theme = theme;
@@ -45,6 +113,11 @@ document.addEventListener("DOMContentLoaded", () => {
   themeToggle?.addEventListener("click", () => {
     const nextTheme = document.body.dataset.theme === "dark" ? "light" : "dark";
     applyTheme(nextTheme, true);
+  });
+
+  viewToggle?.addEventListener("click", () => {
+    const nextView = document.body.dataset.invitationView === "groom" ? "bride" : "groom";
+    applyInvitationView(nextView, true);
   });
 
   themeMediaQuery.addEventListener("change", (event) => {
@@ -276,7 +349,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const createBurst = (x, y, palette) => {
-      const count = window.innerWidth < 640 ? 28 : 42;
+      const count = window.innerWidth < 640 ? 14 : 24;
 
       for (let index = 0; index < count; index += 1) {
         const angle = (Math.PI * 2 * index) / count;
@@ -296,7 +369,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const createMegaBurst = (x, y, palette) => {
-      const count = window.innerWidth < 640 ? 84 : 140;
+      const count = window.innerWidth < 640 ? 42 : 72;
 
       for (let index = 0; index < count; index += 1) {
         const angle = (Math.PI * 2 * index) / count;
@@ -407,17 +480,13 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const launchCelebration = (biasY = 0) => {
-      const directBursts = Array.from({ length: window.innerWidth < 640 ? 1 : 2 }, () => [
+      const directBursts = Array.from({ length: 1 }, () => [
         window.innerWidth * (0.16 + Math.random() * 0.68),
         window.innerHeight * (0.18 + Math.random() * 0.52)
       ]);
 
       const rocketBursts = window.innerWidth < 640
         ? [
-            [
-              [window.innerWidth * 0.18, window.innerHeight * 1.02],
-              [window.innerWidth * 0.26, window.innerHeight * (0.76 - biasY * 0.12)]
-            ],
             [
               [window.innerWidth * 0.82, window.innerHeight * 1.02],
               [window.innerWidth * 0.74, window.innerHeight * (0.22 + biasY)]
@@ -427,10 +496,6 @@ document.addEventListener("DOMContentLoaded", () => {
             [
               [window.innerWidth * 0.12, window.innerHeight * 1.02],
               [window.innerWidth * 0.22, window.innerHeight * (0.82 - biasY * 0.15)]
-            ],
-            [
-              [window.innerWidth * 0.48, window.innerHeight * 0.7],
-              [window.innerWidth * 0.54, window.innerHeight * (0.22 + biasY * 0.24)]
             ],
             [
               [window.innerWidth * 0.88, window.innerHeight * 1.02],
@@ -471,13 +536,10 @@ document.addEventListener("DOMContentLoaded", () => {
     celebrationIntervalId = window.setInterval(() => {
       const randomBias = Math.random() * 0.12;
       launchCelebration(randomBias);
-    }, 3600);
+    }, 6500);
     megaCelebrationIntervalId = window.setInterval(() => {
       launchMegaCelebration();
-    }, 12000);
-    window.setTimeout(() => {
-      launchMegaCelebration();
-    }, 3200);
+    }, 18000);
 
     window.addEventListener("resize", () => {
       deviceScale = Math.min(window.devicePixelRatio || 1, 2);
@@ -485,7 +547,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     hero?.addEventListener("pointerdown", (event) => {
-      createBurst(event.clientX, event.clientY, palettes[Math.floor(Math.random() * palettes.length)]);
+      createBurst(event.clientX, event.clientY, palettes[Math.floor(Math.random() * palettes.length)].slice(0, 2));
     });
 
     window.addEventListener(
@@ -493,14 +555,14 @@ document.addEventListener("DOMContentLoaded", () => {
       () => {
         const now = Date.now();
 
-        if (now - lastScrollBurstAt < 700) {
+        if (now - lastScrollBurstAt < 1400) {
           lastScrollY = window.scrollY;
           return;
         }
 
         const deltaY = window.scrollY - lastScrollY;
 
-        if (Math.abs(deltaY) < 24) {
+        if (Math.abs(deltaY) < 70) {
           lastScrollY = window.scrollY;
           return;
         }
