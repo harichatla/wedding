@@ -3,129 +3,177 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wedding Invitation</title>
+  <title>Bhuvana &amp; Sagar | Wedding Invitation</title>
   <meta
     name="description"
-    content="A modern wedding invitation website with ceremony details, family information, and a photo gallery."
+    content="A colorful modern wedding invitation for Bhuvana and Sagar."
   >
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Roboto:wght@300;400;500;700&display=swap"
     rel="stylesheet"
   >
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="page-shell">
-    <header class="hero">
-      <!-- Replace with your main cover image: images/image1.jpg -->
-      <div class="hero__background" aria-hidden="true"></div>
-      <div class="hero__overlay" aria-hidden="true"></div>
-      <div class="hero__ornament hero__ornament--top" aria-hidden="true"></div>
-      <div class="hero__ornament hero__ornament--bottom" aria-hidden="true"></div>
-      <div class="hero__content fade-in">
-        <div class="hero__panel">
-          <!-- Editable Variable: Couple Names -->
-          <p class="hero__eyebrow">Wedding Invitation</p>
-          <h1>Bhuvana and Sagar</h1>
-          <p class="hero__subtitle">Are Getting Married 💍</p>
-          <div class="hero__meta" aria-label="Wedding quick details">
-            <span>10 May 2026</span>
-            <span>9:29 AM</span>
-            <span>Karimnagar</span>
-          </div>
-          <p class="hero__location">
-            <span class="hero__location-label">Venue</span>
-            <span class="hero__location-text">RBVRR Function Hall Sitarampur (Hall -2), Karimnagar</span>
-          </p>
+  <div class="backdrop backdrop--one" aria-hidden="true"></div>
+  <div class="backdrop backdrop--two" aria-hidden="true"></div>
+
+  <header class="hero">
+    <div class="hero__content reveal">
+      <p class="hero__eyebrow">Wedding Celebration</p>
+      <h1>Bhuvana <span>&amp;</span> Sagar</h1>
+      <p class="hero__lead">A joyful invitation to celebrate love, family, and a new beginning.</p>
+
+      <div class="hero__chips" aria-label="Wedding quick information">
+        <span>10 May 2026</span>
+        <span>9:29 AM</span>
+        <span>Karimnagar</span>
+      </div>
+
+      <div class="hero__actions">
+        <a
+          class="button button--primary"
+          href="https://maps.app.goo.gl/dvCNvoHDrHXfbosz7"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Open Venue Map
+        </a>
+        <a class="button button--ghost" href="#details">Explore Invitation</a>
+      </div>
+    </div>
+
+    <div class="hero__visual reveal">
+      <div class="photo-stack">
+        <!-- Replace with your main image if needed -->
+        <figure class="photo-stack__item photo-stack__item--large">
+          <img src="images/image2.jpg" alt="Bhuvana and Sagar portrait">
+        </figure>
+        <figure class="photo-stack__item photo-stack__item--small">
+          <img src="images/image3.jpg" alt="Bhuvana and Sagar portrait">
+        </figure>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="panel panel--countdown reveal" aria-labelledby="countdown-title">
+      <div class="section-title">
+        <p class="section-title__eyebrow">Countdown</p>
+        <h2 id="countdown-title">Celebration Begins In</h2>
+      </div>
+
+      <div class="countdown" data-target="2026-05-10T09:29:00+05:30">
+        <div class="countdown__item">
+          <span class="countdown__value" data-unit="days">00</span>
+          <span class="countdown__label">Days</span>
+        </div>
+        <div class="countdown__item">
+          <span class="countdown__value" data-unit="hours">00</span>
+          <span class="countdown__label">Hours</span>
+        </div>
+        <div class="countdown__item">
+          <span class="countdown__value" data-unit="minutes">00</span>
+          <span class="countdown__label">Minutes</span>
+        </div>
+        <div class="countdown__item">
+          <span class="countdown__value" data-unit="seconds">00</span>
+          <span class="countdown__label">Seconds</span>
         </div>
       </div>
-      <a class="hero__scroll fade-in" href="#details" aria-label="Scroll to wedding details">Scroll</a>
-    </header>
+    </section>
 
-    <main class="content">
-      <section class="section fade-in" id="details">
-        <div class="section__heading">
-          <p class="section__label">Ceremony</p>
+    <section class="grid grid--details" id="details">
+      <article class="panel panel--feature reveal">
+        <div class="section-title section-title--left">
+          <p class="section-title__eyebrow">Ceremony</p>
           <h2>Wedding Details</h2>
         </div>
-        <article class="card details-card">
-          <div class="detail-item">
-            <span class="detail-item__icon" aria-hidden="true">📅</span>
-            <span class="detail-item__label">Date</span>
-            <!-- Editable Variable: Wedding Date -->
+
+        <div class="detail-list">
+          <div class="detail-card">
+            <span class="detail-card__icon">📅</span>
+            <span class="detail-card__label">Date</span>
             <strong>10 May 2026 (Sunday)</strong>
           </div>
-          <div class="detail-item">
-            <span class="detail-item__icon" aria-hidden="true">⏰</span>
-            <span class="detail-item__label">Time</span>
-            <!-- Editable Variable: Wedding Time -->
+          <div class="detail-card">
+            <span class="detail-card__icon">⏰</span>
+            <span class="detail-card__label">Time</span>
             <strong>9:29 AM</strong>
           </div>
-          <div class="detail-item">
-            <span class="detail-item__icon" aria-hidden="true">🏛️</span>
-            <span class="detail-item__label">Venue</span>
-            <!-- Editable Variable: Venue Name -->
+          <div class="detail-card detail-card--wide">
+            <span class="detail-card__icon">📍</span>
+            <span class="detail-card__label">Venue</span>
             <strong>RBVRR Function Hall Sitarampur (Hall -2), Karimnagar</strong>
           </div>
-          <!-- Editable Variable: Google Maps Link -->
-          <a
-            class="button"
-            href="https://maps.app.goo.gl/dvCNvoHDrHXfbosz7"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            View Location 📍
-          </a>
-        </article>
-      </section>
-
-      <section class="section fade-in" id="family">
-        <div class="section__heading">
-          <p class="section__label">Family</p>
-          <h2>With Blessings From</h2>
         </div>
-        <article class="card family-card">
-          <div class="family-card__item">
-            <span class="detail-item__label">Bride's Parents</span>
-            <!-- Editable Variable: Bride's Parents -->
+
+        <a
+          class="button button--primary"
+          href="https://maps.app.goo.gl/dvCNvoHDrHXfbosz7"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View Location
+        </a>
+      </article>
+
+      <article class="panel panel--blessings reveal">
+        <div class="section-title section-title--left">
+          <p class="section-title__eyebrow">Blessings</p>
+          <h2>Family</h2>
+        </div>
+
+        <div class="family-card">
+          <div class="family-card__group">
+            <span class="family-card__label">Bride's Parents</span>
             <strong>Chatla Pavani and Chatla Anandam</strong>
           </div>
           <div class="family-card__divider" aria-hidden="true"></div>
-          <div class="family-card__item">
-            <span class="detail-item__label">Groom's Parents</span>
-            <!-- Editable Variable: Groom's Parents -->
+          <div class="family-card__group">
+            <span class="family-card__label">Groom's Parents</span>
             <strong>Voggu Suvarna and Markandeyulu (expired)</strong>
           </div>
-        </article>
-      </section>
-
-      <section class="section fade-in" id="gallery">
-        <div class="section__heading">
-          <p class="section__label">Memories</p>
-          <h2>Photo Gallery</h2>
         </div>
-        <div class="gallery-grid">
-          <!-- Replace gallery image: images/image2.jpg -->
-          <figure class="gallery-card card">
-            <img src="images/image2.jpg" alt="Couple gallery image 1">
-          </figure>
-          <!-- Replace gallery image: images/image3.jpg -->
-          <figure class="gallery-card card">
-            <img src="images/image3.jpg" alt="Couple gallery image 2">
-          </figure>
-          <!-- Replace gallery image: images/image4.jpeg -->
-          <figure class="gallery-card card">
-            <img src="images/image4.jpeg" alt="Couple gallery image 3">
-          </figure>
-        </div>
-      </section>
-    </main>
+      </article>
+    </section>
 
-    <footer class="footer fade-in">
-      <p>We look forward to celebrating with you ❤️</p>
-    </footer>
+    <section class="panel panel--gallery reveal" id="gallery">
+      <div class="section-title">
+        <p class="section-title__eyebrow">Gallery</p>
+        <h2>Moments We Treasure</h2>
+      </div>
+
+      <div class="gallery">
+        <button class="gallery__item gallery__item--tall" type="button" data-image="images/image2.jpg" data-caption="Portrait One">
+          <img src="images/image2.jpg" alt="Couple portrait one">
+        </button>
+        <button class="gallery__item" type="button" data-image="images/image3.jpg" data-caption="Portrait Two">
+          <img src="images/image3.jpg" alt="Couple portrait two">
+        </button>
+        <button class="gallery__item gallery__item--wide" type="button" data-image="images/image4.jpeg" data-caption="Portrait Three">
+          <img src="images/image4.jpeg" alt="Couple portrait three">
+        </button>
+        <button class="gallery__item" type="button" data-image="images/image5.jpg" data-caption="Portrait Four">
+          <img src="images/image5.jpg" alt="Couple portrait four">
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer reveal">
+    <p>We look forward to celebrating with you ❤️</p>
+  </footer>
+
+  <div class="lightbox" aria-hidden="true">
+    <button class="lightbox__backdrop" type="button" aria-label="Close image preview"></button>
+    <div class="lightbox__dialog" role="dialog" aria-modal="true" aria-label="Gallery preview">
+      <button class="lightbox__close" type="button" aria-label="Close image preview">×</button>
+      <img class="lightbox__image" src="" alt="">
+      <p class="lightbox__caption"></p>
+    </div>
   </div>
 
   <script src="script.js"></script>

@@ -1,46 +1,86 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const fadeItems = document.querySelectorAll(".fade-in");
-  const galleryImages = document.querySelectorAll(".gallery-card img");
+  const revealItems = document.querySelectorAll(".reveal, .footer");
+  const countdownRoot = document.querySelector(".countdown");
+  const galleryButtons = document.querySelectorAll(".gallery__item");
+  const lightbox = document.querySelector(".lightbox");
+  const lightboxImage = document.querySelector(".lightbox__image");
+  const lightboxCaption = document.querySelector(".lightbox__caption");
+  const lightboxCloseButtons = document.querySelectorAll(".lightbox__close, .lightbox__backdrop");
 
-  const revealItem = (element, delay) => {
-    window.setTimeout(() => {
-      element.classList.add("is-visible");
-    }, delay);
-  };
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.16 }
+  );
 
-  fadeItems.forEach((item, index) => {
-    revealItem(item, 160 + index * 120);
-  });
+  revealItems.forEach((item) => revealObserver.observe(item));
 
-  galleryImages.forEach((image, index) => {
-    const applyImageShape = () => {
-      const card = image.closest(".gallery-card");
+  if (countdownRoot) {
+    const target = new Date(countdownRoot.dataset.target).getTime();
+    const days = countdownRoot.querySelector('[data-unit="days"]');
+    const hours = countdownRoot.querySelector('[data-unit="hours"]');
+    const minutes = countdownRoot.querySelector('[data-unit="minutes"]');
+    const seconds = countdownRoot.querySelector('[data-unit="seconds"]');
 
-      if (!card || !image.naturalWidth || !image.naturalHeight) {
-        return;
-      }
+    const updateCountdown = () => {
+      const now = Date.now();
+      const diff = Math.max(target - now, 0);
 
-      const ratio = image.naturalWidth / image.naturalHeight;
+      const totalSeconds = Math.floor(diff / 1000);
+      const dayValue = Math.floor(totalSeconds / 86400);
+      const hourValue = Math.floor((totalSeconds % 86400) / 3600);
+      const minuteValue = Math.floor((totalSeconds % 3600) / 60);
+      const secondValue = totalSeconds % 60;
 
-      card.classList.remove("is-portrait", "is-landscape", "is-square", "is-featured");
-
-      if (ratio > 1.15) {
-        card.classList.add("is-landscape");
-      } else if (ratio > 0.9) {
-        card.classList.add("is-square");
-      } else {
-        card.classList.add("is-portrait");
-      }
-
-      if (index === galleryImages.length - 1) {
-        card.classList.add("is-featured");
-      }
+      days.textContent = String(dayValue).padStart(2, "0");
+      hours.textContent = String(hourValue).padStart(2, "0");
+      minutes.textContent = String(minuteValue).padStart(2, "0");
+      seconds.textContent = String(secondValue).padStart(2, "0");
     };
 
-    if (image.complete) {
-      applyImageShape();
-    } else {
-      image.addEventListener("load", applyImageShape, { once: true });
+    updateCountdown();
+    window.setInterval(updateCountdown, 1000);
+  }
+
+  const openLightbox = (src, caption, alt) => {
+    lightbox.classList.add("is-open");
+    lightbox.setAttribute("aria-hidden", "false");
+    lightboxImage.src = src;
+    lightboxImage.alt = alt;
+    lightboxCaption.textContent = caption;
+    document.body.style.overflow = "hidden";
+  };
+
+  const closeLightbox = () => {
+    lightbox.classList.remove("is-open");
+    lightbox.setAttribute("aria-hidden", "true");
+    lightboxImage.src = "";
+    lightboxImage.alt = "";
+    lightboxCaption.textContent = "";
+    document.body.style.overflow = "";
+  };
+
+  galleryButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const image = button.querySelector("img");
+
+      openLightbox(button.dataset.image, button.dataset.caption || "", image?.alt || "");
+    });
+  });
+
+  lightboxCloseButtons.forEach((button) => {
+    button.addEventListener("click", closeLightbox);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && lightbox.classList.contains("is-open")) {
+      closeLightbox();
     }
   });
 });
