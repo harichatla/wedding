@@ -157,13 +157,17 @@ button {
   min-height: 100vh;
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
+  grid-template-areas:
+    "intro visual"
+    "meta visual";
   align-items: center;
   gap: 2rem;
   padding: 2rem 0 3rem;
 }
 
-.hero__content,
+.hero__intro,
 .hero__visual,
+.hero__meta-panel,
 .panel,
 .footer {
   opacity: 0;
@@ -189,6 +193,20 @@ button {
 
 .hero__content {
   max-width: 42rem;
+}
+
+.hero__intro {
+  grid-area: intro;
+  max-width: 42rem;
+}
+
+.hero__meta-panel {
+  grid-area: meta;
+  max-width: 42rem;
+}
+
+.hero__visual {
+  grid-area: visual;
 }
 
 .hero__eyebrow {
@@ -686,18 +704,24 @@ button {
   }
 
   .hero {
+    grid-template-areas:
+      "intro"
+      "visual"
+      "meta";
     min-height: auto;
     padding-top: 1.5rem;
   }
 
-  .hero__content {
-    order: 1;
+  .hero__intro {
     max-width: none;
   }
 
   .hero__visual {
-    order: 2;
     margin-top: 0.75rem;
+  }
+
+  .hero__meta-panel {
+    max-width: none;
   }
 
   .photo-stack {
@@ -760,6 +784,11 @@ button {
 
   .hero h1 {
     max-width: none;
+  }
+
+  .hero__intro,
+  .hero__meta-panel {
+    text-align: left;
   }
 
   .hero__scroll-cue {
