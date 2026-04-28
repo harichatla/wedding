@@ -2,6 +2,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const revealItems = document.querySelectorAll(".reveal, .footer");
   const countdownRoot = document.querySelector(".countdown");
   const galleryButtons = document.querySelectorAll(".gallery__item");
+  const scrollCue = document.querySelector(".hero__scroll-cue");
+  const detailsSection = document.querySelector("#details");
+  const sectionLinks = document.querySelectorAll("[data-section-link]");
   const lightbox = document.querySelector(".lightbox");
   const lightboxImage = document.querySelector(".lightbox__image");
   const lightboxCaption = document.querySelector(".lightbox__caption");
@@ -46,6 +49,64 @@ document.addEventListener("DOMContentLoaded", () => {
 
     updateCountdown();
     window.setInterval(updateCountdown, 1000);
+  }
+
+  if (scrollCue) {
+    const hideScrollCue = () => {
+      if (window.scrollY > 40) {
+        scrollCue.classList.add("is-hidden");
+      } else {
+        scrollCue.classList.remove("is-hidden");
+      }
+    };
+
+    window.addEventListener("scroll", hideScrollCue, { passive: true });
+    hideScrollCue();
+  }
+
+  if (scrollCue && detailsSection) {
+    const detailsObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            scrollCue.classList.add("is-hidden");
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    detailsObserver.observe(detailsSection);
+  }
+
+  const trackedSections = ["home", "countdown", "details", "family", "gallery"]
+    .map((id) => document.getElementById(id))
+    .filter(Boolean);
+
+  if (trackedSections.length && sectionLinks.length) {
+    const setActiveSection = (id) => {
+      sectionLinks.forEach((link) => {
+        link.classList.toggle("is-active", link.dataset.sectionLink === id);
+      });
+    };
+
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        const visibleEntries = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        if (visibleEntries.length > 0) {
+          setActiveSection(visibleEntries[0].target.id);
+        }
+      },
+      {
+        rootMargin: "-20% 0px -35% 0px",
+        threshold: [0.2, 0.4, 0.65]
+      }
+    );
+
+    trackedSections.forEach((section) => sectionObserver.observe(section));
   }
 
   const openLightbox = (src, caption, alt) => {

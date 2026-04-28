@@ -20,9 +20,32 @@
   <div class="backdrop backdrop--one" aria-hidden="true"></div>
   <div class="backdrop backdrop--two" aria-hidden="true"></div>
 
-  <header class="hero">
+  <nav class="section-nav" aria-label="Invitation sections">
+    <a class="section-nav__link is-active" href="#home" data-section-link="home">
+      <span class="section-nav__dot" aria-hidden="true"></span>
+      <span class="section-nav__label">Home</span>
+    </a>
+    <a class="section-nav__link" href="#countdown" data-section-link="countdown">
+      <span class="section-nav__dot" aria-hidden="true"></span>
+      <span class="section-nav__label">Countdown</span>
+    </a>
+    <a class="section-nav__link" href="#details" data-section-link="details">
+      <span class="section-nav__dot" aria-hidden="true"></span>
+      <span class="section-nav__label">Ceremony</span>
+    </a>
+    <a class="section-nav__link" href="#family" data-section-link="family">
+      <span class="section-nav__dot" aria-hidden="true"></span>
+      <span class="section-nav__label">Family</span>
+    </a>
+    <a class="section-nav__link" href="#gallery" data-section-link="gallery">
+      <span class="section-nav__dot" aria-hidden="true"></span>
+      <span class="section-nav__label">Gallery</span>
+    </a>
+  </nav>
+
+  <header class="hero" id="home">
     <div class="hero__content reveal">
-      <p class="hero__eyebrow">Wedding Celebration</p>
+      <p class="hero__eyebrow">Chatla's Wedding Celebration</p>
       <h1>Bhuvana <span>&amp;</span> Sagar</h1>
       <p class="hero__lead">A joyful invitation to celebrate love, family, and a new beginning.</p>
 
@@ -41,8 +64,13 @@
         >
           Open Venue Map
         </a>
-        <a class="button button--ghost" href="#details">Explore Invitation</a>
+        <a class="button button--ghost" href="#countdown">Explore Invitation</a>
       </div>
+
+      <a class="hero__scroll-cue" href="#countdown" aria-label="Scroll down to wedding countdown">
+        <span class="hero__scroll-text">Scroll to invitation</span>
+        <span class="hero__scroll-icon" aria-hidden="true">↓</span>
+      </a>
     </div>
 
     <div class="hero__visual reveal">
@@ -59,7 +87,7 @@
   </header>
 
   <main class="page">
-    <section class="panel panel--countdown reveal" aria-labelledby="countdown-title">
+    <section class="panel panel--countdown reveal" id="countdown" aria-labelledby="countdown-title">
       <div class="section-title">
         <p class="section-title__eyebrow">Countdown</p>
         <h2 id="countdown-title">Celebration Begins In</h2>
@@ -120,7 +148,7 @@
         </a>
       </article>
 
-      <article class="panel panel--blessings reveal">
+      <article class="panel panel--blessings reveal" id="family">
         <div class="section-title section-title--left">
           <p class="section-title__eyebrow">Blessings</p>
           <h2>Family</h2>
@@ -129,12 +157,12 @@
         <div class="family-card">
           <div class="family-card__group">
             <span class="family-card__label">Bride's Parents</span>
-            <strong>Chatla Pavani and Chatla Anandam</strong>
+            <strong>Chatla Pavani and Anandam</strong>
           </div>
           <div class="family-card__divider" aria-hidden="true"></div>
           <div class="family-card__group">
             <span class="family-card__label">Groom's Parents</span>
-            <strong>Voggu Suvarna and Markandeyulu (expired)</strong>
+            <strong>Voggu Suvarna and Late Markandeyulu</strong>
           </div>
         </div>
       </article>
