@@ -39,6 +39,15 @@ body {
     linear-gradient(180deg, #fffaff 0%, var(--bg) 100%);
 }
 
+.fireworks-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
 img {
   display: block;
   width: 100%;
@@ -163,6 +172,7 @@ button {
   align-items: center;
   gap: 2rem;
   padding: 2rem 0 3rem;
+  position: relative;
 }
 
 .hero__intro,
@@ -209,6 +219,74 @@ button {
   grid-area: visual;
 }
 
+.hero__sparkles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero__spark {
+  position: absolute;
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.95), rgba(255, 126, 182, 0.72) 45%, rgba(255, 126, 182, 0));
+  opacity: 0.7;
+  filter: blur(0.4px);
+  animation: sparkleFloat 3.6s ease-in-out infinite;
+}
+
+.hero__spark::after {
+  content: "";
+  position: absolute;
+  inset: 50%;
+  width: 2.4rem;
+  height: 1px;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.82), transparent);
+}
+
+.hero__spark::before {
+  content: "";
+  position: absolute;
+  inset: 50%;
+  width: 1px;
+  height: 2.4rem;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.82), transparent);
+}
+
+.hero__spark--1 {
+  top: 12%;
+  left: 8%;
+  animation-delay: 0.2s;
+}
+
+.hero__spark--2 {
+  top: 20%;
+  right: 16%;
+  animation-delay: 1s;
+}
+
+.hero__spark--3 {
+  top: 54%;
+  left: 42%;
+  animation-delay: 1.8s;
+}
+
+.hero__spark--4 {
+  bottom: 20%;
+  left: 18%;
+  animation-delay: 0.8s;
+}
+
+.hero__spark--5 {
+  bottom: 14%;
+  right: 10%;
+  animation-delay: 2.1s;
+}
+
 .hero__eyebrow {
   display: inline-flex;
   align-items: center;
@@ -245,6 +323,13 @@ button {
   font-size: clamp(1.08rem, 2vw, 1.28rem);
   line-height: 1.8;
   text-wrap: pretty;
+}
+
+.hero__intro,
+.hero__meta-panel,
+.hero__visual {
+  position: relative;
+  z-index: 1;
 }
 
 .hero__chips {
@@ -774,6 +859,11 @@ button {
     max-width: none;
   }
 
+  .hero__spark--2,
+  .hero__spark--5 {
+    display: none;
+  }
+
   .photo-stack {
     width: min(100%, 460px);
     height: 650px;
@@ -916,6 +1006,19 @@ button {
   }
 }
 
+@keyframes sparkleFloat {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0) scale(0.9);
+  }
+
+  50% {
+    opacity: 0.95;
+    transform: translateY(-8px) scale(1.08);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -928,9 +1031,15 @@ button {
   .section-nav__link,
   .section-nav__label,
   .section-nav__dot,
+  .hero__spark,
   .gallery__item img,
   .button,
   .lightbox {
     transition: none;
+    animation: none;
+  }
+
+  .fireworks-canvas {
+    display: none;
   }
 }

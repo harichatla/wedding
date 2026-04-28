@@ -3,6 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const countdownRoot = document.querySelector(".countdown");
   const galleryButtons = document.querySelectorAll(".gallery__item");
   const galleryCarousel = document.querySelector("[data-gallery-carousel]");
+  const fireworksCanvas = document.querySelector(".fireworks-canvas");
+  const hero = document.querySelector(".hero");
   const scrollCue = document.querySelector(".hero__scroll-cue");
   const detailsSection = document.querySelector("#details");
   const sectionLinks = document.querySelectorAll("[data-section-link]");
@@ -176,6 +178,236 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     renderGallerySlide();
+  }
+
+  if (fireworksCanvas && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const context = fireworksCanvas.getContext("2d");
+    const particles = [];
+    const rockets = [];
+    let animationFrameId = 0;
+    let deviceScale = Math.min(window.devicePixelRatio || 1, 2);
+    let celebrationIntervalId = 0;
+    let lastScrollBurstAt = 0;
+    let lastScrollY = window.scrollY;
+
+    const resizeCanvas = () => {
+      fireworksCanvas.width = Math.floor(window.innerWidth * deviceScale);
+      fireworksCanvas.height = Math.floor(window.innerHeight * deviceScale);
+      fireworksCanvas.style.width = `${window.innerWidth}px`;
+      fireworksCanvas.style.height = `${window.innerHeight}px`;
+      context.setTransform(deviceScale, 0, 0, deviceScale, 0, 0);
+    };
+
+    const createBurst = (x, y, palette) => {
+      const count = window.innerWidth < 640 ? 28 : 42;
+
+      for (let index = 0; index < count; index += 1) {
+        const angle = (Math.PI * 2 * index) / count;
+        const speed = 1.8 + Math.random() * 4.8;
+
+        particles.push({
+          x,
+          y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          life: 1,
+          decay: 0.008 + Math.random() * 0.009,
+          size: 2.4 + Math.random() * 3.6,
+          color: palette[Math.floor(Math.random() * palette.length)]
+        });
+      }
+    };
+
+    const launchRocket = (startX, startY, targetX, targetY, palette) => {
+      rockets.push({
+        x: startX,
+        y: startY,
+        startX,
+        startY,
+        targetX,
+        targetY,
+        vx: (targetX - startX) * 0.035,
+        vy: (targetY - startY) * 0.035,
+        life: 1,
+        trailColor: palette[Math.floor(Math.random() * palette.length)],
+        burstPalette: palette
+      });
+    };
+
+    const palettes = [
+      ["#ff7eb6", "#ffd166", "#ffffff"],
+      ["#7b2ff7", "#ff7eb6", "#ffe29a"],
+      ["#ffffff", "#f4b6ff", "#ff9ecd"]
+    ];
+
+    const renderFireworks = () => {
+      context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+      for (let index = rockets.length - 1; index >= 0; index -= 1) {
+        const rocket = rockets[index];
+
+        rocket.x += rocket.vx;
+        rocket.y += rocket.vy;
+        rocket.life -= 0.012;
+
+        context.globalAlpha = Math.max(rocket.life, 0.35);
+        context.strokeStyle = rocket.trailColor;
+        context.lineWidth = 2.2;
+        context.shadowBlur = 16;
+        context.shadowColor = rocket.trailColor;
+        context.beginPath();
+        context.moveTo(rocket.startX, rocket.startY);
+        context.lineTo(rocket.x, rocket.y);
+        context.stroke();
+
+        context.fillStyle = "#ffffff";
+        context.beginPath();
+        context.arc(rocket.x, rocket.y, 2.8, 0, Math.PI * 2);
+        context.fill();
+
+        const dx = rocket.targetX - rocket.x;
+        const dy = rocket.targetY - rocket.y;
+        const reachedTarget = Math.hypot(dx, dy) < 18;
+
+        if (reachedTarget || rocket.life <= 0) {
+          createBurst(rocket.x, rocket.y, rocket.burstPalette);
+          rockets.splice(index, 1);
+        }
+      }
+
+      for (let index = particles.length - 1; index >= 0; index -= 1) {
+        const particle = particles[index];
+
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+        particle.vy += 0.015;
+        particle.vx *= 0.992;
+        particle.vy *= 0.992;
+        particle.life -= particle.decay;
+
+        if (particle.life <= 0) {
+          particles.splice(index, 1);
+          continue;
+        }
+
+        context.globalAlpha = particle.life;
+        context.fillStyle = particle.color;
+        context.shadowBlur = 18;
+        context.shadowColor = particle.color;
+        context.beginPath();
+        context.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+        context.fill();
+      }
+
+      context.globalAlpha = 1;
+      context.shadowBlur = 0;
+      animationFrameId = window.requestAnimationFrame(renderFireworks);
+    };
+
+    const launchCelebration = (biasY = 0) => {
+      const directBursts = Array.from({ length: window.innerWidth < 640 ? 1 : 2 }, () => [
+        window.innerWidth * (0.16 + Math.random() * 0.68),
+        window.innerHeight * (0.18 + Math.random() * 0.52)
+      ]);
+
+      const rocketBursts = window.innerWidth < 640
+        ? [
+            [
+              [window.innerWidth * 0.18, window.innerHeight * 1.02],
+              [window.innerWidth * 0.26, window.innerHeight * (0.76 - biasY * 0.12)]
+            ],
+            [
+              [window.innerWidth * 0.82, window.innerHeight * 1.02],
+              [window.innerWidth * 0.74, window.innerHeight * (0.22 + biasY)]
+            ]
+          ]
+        : [
+            [
+              [window.innerWidth * 0.12, window.innerHeight * 1.02],
+              [window.innerWidth * 0.22, window.innerHeight * (0.82 - biasY * 0.15)]
+            ],
+            [
+              [window.innerWidth * 0.48, window.innerHeight * 0.7],
+              [window.innerWidth * 0.54, window.innerHeight * (0.22 + biasY * 0.24)]
+            ],
+            [
+              [window.innerWidth * 0.88, window.innerHeight * 1.02],
+              [window.innerWidth * 0.78, window.innerHeight * (0.72 - biasY * 0.18)]
+            ]
+          ];
+
+      rocketBursts.forEach(([start, target], index) => {
+        window.setTimeout(() => {
+          launchRocket(start[0], start[1], target[0], target[1], palettes[index % palettes.length]);
+        }, index * 180);
+      });
+
+      directBursts.forEach(([x, y], index) => {
+        window.setTimeout(() => {
+          createBurst(x, y, palettes[(index + rocketBursts.length) % palettes.length]);
+        }, (index + rocketBursts.length) * 180);
+      });
+    };
+
+    resizeCanvas();
+    launchCelebration();
+    renderFireworks();
+    celebrationIntervalId = window.setInterval(() => {
+      const randomBias = Math.random() * 0.12;
+      launchCelebration(randomBias);
+    }, 2600);
+
+    window.addEventListener("resize", () => {
+      deviceScale = Math.min(window.devicePixelRatio || 1, 2);
+      resizeCanvas();
+    });
+
+    hero?.addEventListener("pointerdown", (event) => {
+      createBurst(event.clientX, event.clientY, palettes[Math.floor(Math.random() * palettes.length)]);
+    });
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        const now = Date.now();
+
+        if (now - lastScrollBurstAt < 700) {
+          lastScrollY = window.scrollY;
+          return;
+        }
+
+        const deltaY = window.scrollY - lastScrollY;
+
+        if (Math.abs(deltaY) < 24) {
+          lastScrollY = window.scrollY;
+          return;
+        }
+
+        const x = deltaY > 0
+          ? window.innerWidth * (0.68 + Math.random() * 0.18)
+          : window.innerWidth * (0.14 + Math.random() * 0.18);
+        const y = deltaY > 0
+          ? window.innerHeight * (0.68 + Math.random() * 0.18)
+          : window.innerHeight * (0.26 + Math.random() * 0.22);
+
+        createBurst(x, y, palettes[Math.floor(Math.random() * palettes.length)]);
+        lastScrollBurstAt = now;
+        lastScrollY = window.scrollY;
+      },
+      { passive: true }
+    );
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        window.clearInterval(celebrationIntervalId);
+        celebrationIntervalId = 0;
+      } else if (!celebrationIntervalId) {
+        celebrationIntervalId = window.setInterval(() => {
+          const randomBias = Math.random() * 0.12;
+          launchCelebration(randomBias);
+        }, 2600);
+      }
+    });
   }
 
   const openLightbox = (src, caption, alt) => {
