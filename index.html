@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wedding Invitation</title>
+  <meta
+    name="description"
+    content="A modern wedding invitation website with ceremony details, family information, and a photo gallery."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <!-- Replace with your main cover image: images/cover.jpg -->
+      <!-- Temporary placeholder in use: images/cover-placeholder.svg -->
+      <div class="hero__background" aria-hidden="true"></div>
+      <div class="hero__overlay" aria-hidden="true"></div>
+      <div class="hero__ornament hero__ornament--top" aria-hidden="true"></div>
+      <div class="hero__ornament hero__ornament--bottom" aria-hidden="true"></div>
+      <div class="hero__content fade-in">
+        <div class="hero__panel">
+          <!-- Editable Variable: Couple Names -->
+          <p class="hero__eyebrow">Wedding Invitation</p>
+          <h1>Bhuvana and Sagar</h1>
+          <p class="hero__subtitle">Are Getting Married 💍</p>
+          <div class="hero__meta" aria-label="Wedding quick details">
+            <span>10 May 2026</span>
+            <span>9:29 AM</span>
+            <span>Karimnagar</span>
+          </div>
+          <a class="hero__cta" href="#details">View Details</a>
+        </div>
+      </div>
+      <a class="hero__scroll fade-in" href="#details" aria-label="Scroll to wedding details">Scroll</a>
+    </header>
+
+    <main class="content">
+      <section class="section fade-in" id="details">
+        <div class="section__heading">
+          <p class="section__label">Ceremony</p>
+          <h2>Wedding Details</h2>
+        </div>
+        <article class="card details-card">
+          <div class="detail-item">
+            <span class="detail-item__icon" aria-hidden="true">📅</span>
+            <span class="detail-item__label">Date</span>
+            <!-- Editable Variable: Wedding Date -->
+            <strong>10 May 2026 (Sunday)</strong>
+          </div>
+          <div class="detail-item">
+            <span class="detail-item__icon" aria-hidden="true">⏰</span>
+            <span class="detail-item__label">Time</span>
+            <!-- Editable Variable: Wedding Time -->
+            <strong>9:29 AM</strong>
+          </div>
+          <div class="detail-item">
+            <span class="detail-item__icon" aria-hidden="true">🏛️</span>
+            <span class="detail-item__label">Venue</span>
+            <!-- Editable Variable: Venue Name -->
+            <strong>RBVRR Function Hall Sitarampur (Hall -2), Karimnagar</strong>
+          </div>
+          <!-- Editable Variable: Google Maps Link -->
+          <a
+            class="button"
+            href="https://maps.app.goo.gl/dvCNvoHDrHXfbosz7"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View Location 📍
+          </a>
+        </article>
+      </section>
+
+      <section class="section fade-in" id="family">
+        <div class="section__heading">
+          <p class="section__label">Family</p>
+          <h2>With Blessings From</h2>
+        </div>
+        <article class="card family-card">
+          <div class="family-card__item">
+            <span class="detail-item__label">Bride's Parents</span>
+            <!-- Editable Variable: Bride's Parents -->
+            <strong>Chatla Pavani and Chatla Anandam</strong>
+          </div>
+          <div class="family-card__divider" aria-hidden="true"></div>
+          <div class="family-card__item">
+            <span class="detail-item__label">Groom's Parents</span>
+            <!-- Editable Variable: Groom's Parents -->
+            <strong>Voggu Suvarna and Markandeyulu (expired)</strong>
+          </div>
+        </article>
+      </section>
+
+      <section class="section fade-in" id="gallery">
+        <div class="section__heading">
+          <p class="section__label">Memories</p>
+          <h2>Photo Gallery</h2>
+        </div>
+        <div class="gallery-grid">
+          <!-- Replace gallery image: images/photo1.jpg -->
+          <!-- Temporary placeholder in use: images/photo1-placeholder.svg -->
+          <figure class="gallery-card card">
+            <img src="images/photo1-placeholder.svg" alt="Placeholder gallery image 1">
+          </figure>
+          <!-- Replace gallery image: images/photo2.jpg -->
+          <!-- Temporary placeholder in use: images/photo2-placeholder.svg -->
+          <figure class="gallery-card card">
+            <img src="images/photo2-placeholder.svg" alt="Placeholder gallery image 2">
+          </figure>
+          <!-- Replace gallery image: images/photo3.jpg -->
+          <!-- Temporary placeholder in use: images/photo3-placeholder.svg -->
+          <figure class="gallery-card card">
+            <img src="images/photo3-placeholder.svg" alt="Placeholder gallery image 3">
+          </figure>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer fade-in">
+      <p>We look forward to celebrating with you ❤️</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
