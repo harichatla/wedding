@@ -38,11 +38,26 @@
       <span class="section-nav__dot" aria-hidden="true"></span>
       <span class="section-nav__label">Family</span>
     </a>
+    <a class="section-nav__link" href="#blessings" data-section-link="blessings">
+      <span class="section-nav__dot" aria-hidden="true"></span>
+      <span class="section-nav__label">Wishes</span>
+    </a>
     <a class="section-nav__link" href="#gallery" data-section-link="gallery">
       <span class="section-nav__dot" aria-hidden="true"></span>
       <span class="section-nav__label">Gallery</span>
     </a>
   </nav>
+
+  <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Switch to dark mode">
+    <span class="theme-toggle__icon" data-theme-icon aria-hidden="true">🌙</span>
+    <span class="theme-toggle__label" data-theme-label>Dark Mode</span>
+  </button>
+
+  <button class="celebrate-button" type="button" data-celebrate-button aria-label="Celebrate with fireworks">
+    <span class="celebrate-button__icon" aria-hidden="true">🎉</span>
+    <span>Celebrate</span>
+  </button>
+  <div class="celebrate-toast" data-celebrate-toast aria-live="polite">Let the celebrations begin!</div>
 
   <header class="hero" id="home">
     <div class="hero__sparkles" aria-hidden="true">
@@ -177,6 +192,23 @@
           </div>
         </div>
       </article>
+    </section>
+
+    <section class="panel panel--blessing reveal" id="blessings">
+      <div class="section-title">
+        <p class="section-title__eyebrow">Blessings</p>
+        <h2>Send Your Blessings</h2>
+        <p class="section-copy">Tap below to reveal a warm wish for the couple.</p>
+      </div>
+
+      <div class="blessing-card">
+        <p class="blessing-card__text" data-blessing-text>
+          May your life together be filled with love, laughter, and peace.
+        </p>
+        <button class="button button--ghost blessing-card__button" type="button" data-blessing-button>
+          Show Another Blessing
+        </button>
+      </div>
     </section>
 
     <section class="panel panel--gallery reveal" id="gallery">

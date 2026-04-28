@@ -1,8 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const themeToggle = document.querySelector("[data-theme-toggle]");
+  const themeLabel = document.querySelector("[data-theme-label]");
+  const themeIcon = document.querySelector("[data-theme-icon]");
   const revealItems = document.querySelectorAll(".reveal, .footer");
   const countdownRoot = document.querySelector(".countdown");
+  const blessingButton = document.querySelector("[data-blessing-button]");
+  const blessingText = document.querySelector("[data-blessing-text]");
   const galleryButtons = document.querySelectorAll(".gallery__item");
   const galleryCarousel = document.querySelector("[data-gallery-carousel]");
+  const celebrateButton = document.querySelector("[data-celebrate-button]");
+  const celebrateToast = document.querySelector("[data-celebrate-toast]");
   const fireworksCanvas = document.querySelector(".fireworks-canvas");
   const hero = document.querySelector(".hero");
   const scrollCue = document.querySelector(".hero__scroll-cue");
@@ -12,6 +19,39 @@ document.addEventListener("DOMContentLoaded", () => {
   const lightboxImage = document.querySelector(".lightbox__image");
   const lightboxCaption = document.querySelector(".lightbox__caption");
   const lightboxCloseButtons = document.querySelectorAll(".lightbox__close, .lightbox__backdrop");
+  const themeStorageKey = "wedding-theme";
+  const themeMediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+  const applyTheme = (theme, persist = false) => {
+    document.body.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
+
+    if (themeToggle && themeLabel && themeIcon) {
+      const isDark = theme === "dark";
+      themeToggle.setAttribute("aria-pressed", String(isDark));
+      themeToggle.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
+      themeLabel.textContent = isDark ? "Light Mode" : "Dark Mode";
+      themeIcon.textContent = isDark ? "☀️" : "🌙";
+    }
+
+    if (persist) {
+      window.localStorage.setItem(themeStorageKey, theme);
+    }
+  };
+
+  const savedTheme = window.localStorage.getItem(themeStorageKey);
+  applyTheme(savedTheme || (themeMediaQuery.matches ? "dark" : "light"));
+
+  themeToggle?.addEventListener("click", () => {
+    const nextTheme = document.body.dataset.theme === "dark" ? "light" : "dark";
+    applyTheme(nextTheme, true);
+  });
+
+  themeMediaQuery.addEventListener("change", (event) => {
+    if (!window.localStorage.getItem(themeStorageKey)) {
+      applyTheme(event.matches ? "dark" : "light");
+    }
+  });
 
   const revealObserver = new IntersectionObserver(
     (entries) => {
@@ -26,6 +66,29 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   revealItems.forEach((item) => revealObserver.observe(item));
+
+  if (blessingButton && blessingText) {
+    const blessings = [
+      "May your life together be filled with love, laughter, and peace.",
+      "Wishing you endless joy as you begin this beautiful journey together.",
+      "May your home always be bright with happiness and harmony.",
+      "May every day of your marriage bring new reasons to smile.",
+      "Wishing you a lifetime of togetherness, trust, and celebration.",
+      "May your hearts stay forever connected in love and understanding.",
+      "May this new chapter be full of blessings, warmth, and sweet memories."
+    ];
+    let blessingIndex = 0;
+
+    blessingButton.addEventListener("click", () => {
+      blessingIndex = (blessingIndex + 1) % blessings.length;
+      blessingText.classList.add("is-changing");
+
+      window.setTimeout(() => {
+        blessingText.textContent = blessings[blessingIndex];
+        blessingText.classList.remove("is-changing");
+      }, 180);
+    });
+  }
 
   if (countdownRoot) {
     const target = new Date(countdownRoot.dataset.target).getTime();
@@ -82,7 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
     detailsObserver.observe(detailsSection);
   }
 
-  const trackedSections = ["home", "countdown", "details", "family", "gallery"]
+  const trackedSections = ["home", "countdown", "details", "family", "blessings", "gallery"]
     .map((id) => document.getElementById(id))
     .filter(Boolean);
 
@@ -119,6 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const prevButton = galleryCarousel.querySelector("[data-gallery-prev]");
     const nextButton = galleryCarousel.querySelector("[data-gallery-next]");
     let currentSlide = 0;
+    let autoSlideIntervalId = 0;
 
     const renderGallerySlide = () => {
       galleryTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
@@ -144,6 +208,14 @@ document.addEventListener("DOMContentLoaded", () => {
         renderGallerySlide();
       });
     });
+
+    const restartAutoSlide = () => {
+      window.clearInterval(autoSlideIntervalId);
+      autoSlideIntervalId = window.setInterval(() => {
+        currentSlide = (currentSlide + 1) % gallerySlides.length;
+        renderGallerySlide();
+      }, 3200);
+    };
 
     let touchStartX = 0;
     let touchEndX = 0;
@@ -173,12 +245,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         renderGallerySlide();
+        restartAutoSlide();
       },
       { passive: true }
     );
 
     renderGallerySlide();
+    restartAutoSlide();
   }
+
+  let triggerCelebration = () => {};
 
   if (fireworksCanvas && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     const context = fireworksCanvas.getContext("2d");
@@ -187,6 +263,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let animationFrameId = 0;
     let deviceScale = Math.min(window.devicePixelRatio || 1, 2);
     let celebrationIntervalId = 0;
+    let megaCelebrationIntervalId = 0;
     let lastScrollBurstAt = 0;
     let lastScrollY = window.scrollY;
 
@@ -218,7 +295,27 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     };
 
-    const launchRocket = (startX, startY, targetX, targetY, palette) => {
+    const createMegaBurst = (x, y, palette) => {
+      const count = window.innerWidth < 640 ? 84 : 140;
+
+      for (let index = 0; index < count; index += 1) {
+        const angle = (Math.PI * 2 * index) / count;
+        const speed = 2.8 + Math.random() * 7.2;
+
+        particles.push({
+          x,
+          y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          life: 1,
+          decay: 0.006 + Math.random() * 0.006,
+          size: 2.8 + Math.random() * 4.8,
+          color: palette[Math.floor(Math.random() * palette.length)]
+        });
+      }
+    };
+
+    const launchRocket = (startX, startY, targetX, targetY, palette, isMega = false) => {
       rockets.push({
         x: startX,
         y: startY,
@@ -230,7 +327,8 @@ document.addEventListener("DOMContentLoaded", () => {
         vy: (targetY - startY) * 0.035,
         life: 1,
         trailColor: palette[Math.floor(Math.random() * palette.length)],
-        burstPalette: palette
+        burstPalette: palette,
+        isMega
       });
     };
 
@@ -252,17 +350,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         context.globalAlpha = Math.max(rocket.life, 0.35);
         context.strokeStyle = rocket.trailColor;
-        context.lineWidth = 2.2;
-        context.shadowBlur = 16;
+        context.lineWidth = rocket.isMega ? 6.5 : 3.2;
+        context.shadowBlur = rocket.isMega ? 30 : 18;
         context.shadowColor = rocket.trailColor;
         context.beginPath();
         context.moveTo(rocket.startX, rocket.startY);
         context.lineTo(rocket.x, rocket.y);
         context.stroke();
 
-        context.fillStyle = "#ffffff";
+        context.fillStyle = rocket.isMega ? "#fff6d6" : "#ffffff";
         context.beginPath();
-        context.arc(rocket.x, rocket.y, 2.8, 0, Math.PI * 2);
+        context.arc(rocket.x, rocket.y, rocket.isMega ? 5.2 : 2.8, 0, Math.PI * 2);
         context.fill();
 
         const dx = rocket.targetX - rocket.x;
@@ -270,7 +368,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const reachedTarget = Math.hypot(dx, dy) < 18;
 
         if (reachedTarget || rocket.life <= 0) {
-          createBurst(rocket.x, rocket.y, rocket.burstPalette);
+          if (rocket.isMega) {
+            createMegaBurst(rocket.x, rocket.y, rocket.burstPalette);
+          } else {
+            createBurst(rocket.x, rocket.y, rocket.burstPalette);
+          }
           rockets.splice(index, 1);
         }
       }
@@ -349,13 +451,33 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     };
 
+    const launchMegaCelebration = () => {
+      const startX = window.innerWidth * (0.45 + Math.random() * 0.1);
+      const targetX = window.innerWidth * (0.38 + Math.random() * 0.24);
+      const targetY = window.innerHeight * (window.innerWidth < 640 ? 0.2 : 0.16);
+      const palette = ["#ffffff", "#ffd166", "#ff7eb6", "#7b2ff7", "#ffe29a"];
+
+      launchRocket(startX, window.innerHeight * 1.05, targetX, targetY, palette, true);
+    };
+
+    triggerCelebration = () => {
+      launchCelebration(Math.random() * 0.12);
+      launchMegaCelebration();
+    };
+
     resizeCanvas();
     launchCelebration();
     renderFireworks();
     celebrationIntervalId = window.setInterval(() => {
       const randomBias = Math.random() * 0.12;
       launchCelebration(randomBias);
-    }, 2600);
+    }, 3600);
+    megaCelebrationIntervalId = window.setInterval(() => {
+      launchMegaCelebration();
+    }, 12000);
+    window.setTimeout(() => {
+      launchMegaCelebration();
+    }, 3200);
 
     window.addEventListener("resize", () => {
       deviceScale = Math.min(window.devicePixelRatio || 1, 2);
@@ -400,12 +522,33 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) {
         window.clearInterval(celebrationIntervalId);
+        window.clearInterval(megaCelebrationIntervalId);
         celebrationIntervalId = 0;
+        megaCelebrationIntervalId = 0;
       } else if (!celebrationIntervalId) {
         celebrationIntervalId = window.setInterval(() => {
           const randomBias = Math.random() * 0.12;
           launchCelebration(randomBias);
-        }, 2600);
+        }, 3600);
+        megaCelebrationIntervalId = window.setInterval(() => {
+          launchMegaCelebration();
+        }, 12000);
+      }
+    });
+  }
+
+  if (celebrateButton) {
+    let toastTimer = 0;
+
+    celebrateButton.addEventListener("click", () => {
+      triggerCelebration();
+
+      if (celebrateToast) {
+        celebrateToast.classList.add("is-visible");
+        window.clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => {
+          celebrateToast.classList.remove("is-visible");
+        }, 1800);
       }
     });
   }
