@@ -157,6 +157,30 @@ a {
   font-weight: 500;
 }
 
+.hero__location {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0 0 2rem;
+  padding: 1rem 1.1rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.hero__location-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.hero__location-text {
+  font-size: clamp(1rem, 1.8vw, 1.12rem);
+  line-height: 1.6;
+  font-weight: 400;
+}
+
 .hero__cta,
 .button {
   display: inline-flex;
@@ -316,6 +340,7 @@ a {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: 1.1rem;
+  align-items: start;
 }
 
 .gallery-card {
@@ -325,19 +350,30 @@ a {
   box-shadow: var(--shadow-soft);
 }
 
-.gallery-card:nth-child(1),
-.gallery-card:nth-child(2) {
+.gallery-card {
   grid-column: span 6;
 }
 
-.gallery-card:nth-child(3) {
+.gallery-card.is-featured,
+.gallery-card.is-landscape {
   grid-column: span 12;
 }
 
 .gallery-card img {
-  aspect-ratio: 16 / 11;
+  width: 100%;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
+  object-position: center;
   transition: transform 0.5s ease;
+  background: #f3ecff;
+}
+
+.gallery-card.is-landscape img {
+  aspect-ratio: 16 / 10;
+}
+
+.gallery-card.is-square img {
+  aspect-ratio: 1 / 1;
 }
 
 .gallery-card:hover img {
@@ -395,9 +431,9 @@ a {
 }
 
 @media (max-width: 959px) {
-  .gallery-card:nth-child(1),
-  .gallery-card:nth-child(2),
-  .gallery-card:nth-child(3) {
+  .gallery-card,
+  .gallery-card.is-featured,
+  .gallery-card.is-landscape {
     grid-column: span 12;
   }
 }
@@ -432,6 +468,10 @@ a {
 
   .hero__meta span {
     width: 100%;
+  }
+
+  .hero__location {
+    padding: 0.95rem 1rem;
   }
 
   .hero__scroll {
