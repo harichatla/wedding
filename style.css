@@ -1424,11 +1424,7 @@ body[data-theme="dark"] .lightbox__close {
   }
 
   body::before {
-    opacity: 0.12;
-    background-size: contain;
-    background-position: center top;
-    filter: blur(18px) saturate(0.9);
-    transform: scale(1.02);
+    display: none;
   }
 
   .celebrate-button {
@@ -1471,23 +1467,15 @@ body[data-theme="dark"] .lightbox__close {
 
   .hero::before {
     background:
-      linear-gradient(180deg, rgba(255, 250, 255, 0.9) 0%, rgba(255, 250, 255, 0.68) 24%, rgba(255, 250, 255, 0.38) 56%, rgba(255, 250, 255, 0.82) 100%),
-      linear-gradient(180deg, rgba(255, 239, 248, 0.16), rgba(255, 255, 255, 0.08)),
-      var(--hero-cover-image);
-    background-repeat: no-repeat;
-    background-size: auto, auto, cover;
-    background-position: center, center, center top;
+      linear-gradient(180deg, rgba(255, 250, 255, 0.96) 0%, rgba(255, 250, 255, 0.9) 34%, rgba(251, 246, 255, 0.94) 100%),
+      linear-gradient(180deg, rgba(255, 239, 248, 0.18), rgba(255, 255, 255, 0.08));
     transform: none;
   }
 
   body[data-theme="dark"] .hero::before {
     background:
-      linear-gradient(180deg, rgba(18, 13, 28, 0.88) 0%, rgba(18, 13, 28, 0.62) 24%, rgba(18, 13, 28, 0.34) 56%, rgba(18, 13, 28, 0.82) 100%),
-      linear-gradient(180deg, rgba(184, 132, 255, 0.08), rgba(255, 151, 200, 0.04)),
-      var(--hero-cover-image);
-    background-repeat: no-repeat;
-    background-size: auto, auto, cover;
-    background-position: center, center, center top;
+      linear-gradient(180deg, rgba(18, 13, 28, 0.96) 0%, rgba(18, 13, 28, 0.9) 34%, rgba(20, 15, 31, 0.94) 100%),
+      linear-gradient(180deg, rgba(184, 132, 255, 0.08), rgba(255, 151, 200, 0.04));
   }
 
   .hero::after {
